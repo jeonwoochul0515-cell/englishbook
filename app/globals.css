@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 45, 52, 54;
+  --background-rgb: 255, 249, 240;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Pretendard', sans-serif;
+}
+
+@layer components {
+  .nav-item {
+    @apply flex flex-col items-center justify-center w-full h-full text-gray-500 transition-colors duration-200;
+  }
+  .nav-item.active {
+    @apply text-orange-500;
+  }
+}
