@@ -1,1 +1,235 @@
-/* Add styles here */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-buttons button, #auth-container button {
+    background-color: #f0f2f5;
+    color: #182848;
+    border: none;
+    padding: 0.7rem 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.header-buttons button:hover, #auth-container button:hover {
+    background-color: #d9e2ec;
+    transform: translateY(-2px);
+}
+
+#auth-container {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-left: 1rem;
+}
+
+#user-info {
+    font-weight: bold;
+}
+
+main {
+    padding: 2rem;
+    text-align: center;
+}
+
+#upload-container {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+#book-container {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: left;
+    font-size: 1.15rem;
+}
+
+.sentence {
+    transition: all 0.3s ease-in-out;
+    padding: 0.6rem;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.blurred {
+    opacity: 0.2;
+    filter: blur(2.5px);
+}
+
+.highlighted {
+    font-size: 1.35em;
+    font-weight: bold;
+    background-color: #e3f2fd;
+    transform: scale(1.03);
+    box-shadow: 0 2px 8px rgba(75, 108, 183, 0.2);
+}
+
+#nav-buttons {
+    margin-top: 2rem;
+}
+
+#nav-buttons button {
+    background-color: #4b6cb7;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+#nav-buttons button:hover {
+    background-color: #182848;
+}
+
+.hidden {
+    display: none !important; 
+}
+
+/* Modal Styles */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 35px;
+    border: none;
+    width: 90%;
+    max-width: 550px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s;
+}
+
+@keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+@keyframes slideIn { from {transform: translateY(-50px)} to {transform: translateY(0)} }
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 2.2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.close-btn:hover, .close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Settings Modal Specifics */
+#settings-modal .setting-section {
+    margin-bottom: 2rem;
+}
+#settings-modal h3 {
+    color: #182848;
+    border-bottom: 2px solid #4b6cb7;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+#settings-modal input[type="password"], #settings-modal textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Important for padding */
+    margin-bottom: 0.8rem;
+}
+#settings-modal button {
+    background-color: #4b6cb7;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+#definition-word {
+    color: #182848;
+}
+
+#add-to-vocab-btn, #quiz-options button {
+    background-color: #4b6cb7;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#add-to-vocab-btn:hover, #quiz-options button:hover {
+    background-color: #182848;
+}
+
+#vocab-list {
+    list-style: none;
+    padding: 0;
+}
+
+#vocab-list li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+#quiz-options {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#quiz-options button, #quiz-container button {
+    margin: 5px;
+    background-color: #4b6cb7;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
