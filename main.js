@@ -1,3 +1,6 @@
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+
 import { initAI, getWordDefinition, generateComprehensionQuiz } from './ai.js';
 import { initFirebase, login, logout, saveUserData, loadUserData } from './firebase.js';
 
@@ -280,6 +283,7 @@ vocabBtn.addEventListener('click', () => {
 });
 
 function renderVocabulary() {
+    const vocabList = document.getElementById('vocab-list');
     vocabList.innerHTML = '';
     if (vocabulary.length === 0) {
         vocabList.innerHTML = '<li>단어장에 단어가 없습니다.</li>';
