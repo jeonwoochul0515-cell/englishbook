@@ -1,0 +1,12 @@
+{
+  "name": "english-book-ai",
+  "version": "1.0.0",
+  "description": "AI Reading Companion for English Books",
+  "main": "main.js",
+  "scripts": {
+    "serve": "http-server . -p 8000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
