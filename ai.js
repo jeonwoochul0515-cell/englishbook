@@ -1,78 +1,72 @@
+
 import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 let genAI;
+let model;
 
 export function initAI(apiKey) {
-    if (!apiKey) {
-        console.error("API key is required to initialize AI.");
-        return false;
-    }
     try {
         genAI = new GoogleGenerativeAI(apiKey);
+        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         return true;
     } catch (error) {
-        console.error("Error initializing AI:", error);
+        console.error("AI Init Error:", error);
         return false;
     }
 }
 
-export async function getWordDefinition(word, contextSentence) {
-    if (!genAI) {
-        return "AI is not initialized. Please enter your API key.";
-    }
-
+export async function getWordDefinition(word, context) {
+    if (!model) return "AI가 초기화되지 않았습니다.";
+    const prompt = `Translate the English word "${word}" in the following context: "${context}". 
+    Provide the most accurate Korean meaning and a very brief explanation or example if possible. 
+    Format: [Meaning] (short explanation)`;
+    
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-        const prompt = `다음 문장에서 "${word}"라는 단어의 뜻을 한국어로 설명해줘. 학생도 이해할 수 있도록 쉽고 간결하게, 그리고 원래 문장의 문맥을 고려해서 설명해줘.\n\n문장: "${contextSentence}"`;
-
         const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = await response.text();
-        return text;
+        return result.response.text();
     } catch (error) {
-        console.error("Error getting definition:", error);
-        return "단어의 뜻을 가져오는 데 실패했습니다. 다시 시도해주세요.";
+        console.error("Definition Error:", error);
+        return "뜻을 가져오는 중 오류가 발생했습니다.";
     }
 }
 
-export async function generateComprehensionQuiz(contextSentences) {
-    if (!genAI) {
+/**
+ * Magic Subtitles 로직: 문장을 청크(Chunk) 단위로 나누고 번역합니다.
+ */
+export async function getMagicSubtitles(sentence) {
+    if (!model) return null;
+    const prompt = `Analyze the following English sentence and break it down into meaningful chunks for a language learner. 
+    For each chunk, provide its Korean translation that follows the English word order (direct translation).
+    Sentence: "${sentence}"
+    Return the result ONLY as a JSON array of objects, like this: 
+    [{"en": "The rabbit-hole", "ko": "그 토끼 구멍은"}, {"en": "went straight on", "ko": "곧장 이어졌다"}]`;
+
+    try {
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        // Extract JSON from potential markdown code blocks
+        const jsonMatch = text.match(/\[.*\]/s);
+        return jsonMatch ? JSON.parse(jsonMatch[0]) : null;
+    } catch (error) {
+        console.error("Magic Subtitles Error:", error);
         return null;
     }
-
-    try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const prompt = `다음 영어 본문 내용은 책의 일부입니다. 이 내용에 대해 사용자의 이해도를 테스트할 수 있는 객관식 질문 1개를 만들어 주세요. 질문과 선택지는 모두 한국어로 작성해주세요. 정답이 1개인 4개의 선택지를 제공해야 합니다. 가장 중요한 핵심 내용을 질문하는 퀴즈를 만들어 주세요.
-
-반드시 다음 JSON 형식을 정확히 따라서 응답해주세요:
-{
-  "question": "여기에 질문을 작성하세요",
-  "options": [
-    "선택지 1",
-    "선택지 2",
-    "선택지 3",
-    "선택지 4"
-  ],
-  "answer": "정답 선택지"
 }
 
----
-영어 본문:
-${contextSentences}
----
-`;
+export async function generateComprehensionQuiz(context) {
+    if (!model) return null;
+    const prompt = `Based on the following text, create a multiple-choice comprehension question in Korean.
+    Text: "${context}"
+    Return the result ONLY as a JSON object:
+    {"question": "질문", "options": ["옵션1", "옵션2", "옵션3", "옵션4"], "answer": "정답인 옵션"}`;
 
+    try {
         const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = await response.text();
-        
-        // Clean the response and parse JSON
-        const jsonString = text.match(/\{.*\}/s)[0];
-        const quizData = JSON.parse(jsonString);
-        return quizData;
-
+        const text = result.response.text();
+        const jsonMatch = text.match(/\{.*\}/s);
+        return jsonMatch ? JSON.parse(jsonMatch[0]) : null;
     } catch (error) {
-        console.error("Error generating comprehension quiz:", error);
+        console.error("Quiz Generation Error:", error);
         return null;
     }
 }
